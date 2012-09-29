@@ -1,0 +1,18 @@
+#!/bin/sh
+
+PLZ_START_NAME="${1}";
+PLZ_START_REVISION="${2}";
+PLZ_START_LOCATION="${PLZ_APP_STORE}/${PLZ_START_NAME}/${PLZ_START_REVISION}";
+
+if [ ! -d "${PLZ_START_LOCATION}" ]; then
+  echo "${PLZ_START_NAME}/${PLZ_START_REVISION} doesn't exist!";
+  exit;
+fi;
+
+echo "Starting ${PLZ_START_NAME} (${PLZ_START_REVISION})...";
+
+cd "${PLZ_START_LOCATION}";
+cat plz_start | while read name script; do
+  name=${name/:/};
+  print_and_execute forever start -a --uid "${PLZ_START_NAME}.${PLZ_START_REVISION}.${name}" "${script}";
+done;

@@ -1,0 +1,18 @@
+#!/bin/sh
+
+PLZ_STOP_NAME="${1}";
+PLZ_STOP_REVISION="${2}";
+PLZ_STOP_LOCATION="${PLZ_APP_STORE}/${PLZ_STOP_NAME}/${PLZ_STOP_REVISION}";
+
+if [ ! -d "${PLZ_STOP_LOCATION}" ]; then
+  echo "${PLZ_STOP_NAME}/${PLZ_STOP_REVISION} doesn't exist!";
+  exit;
+fi;
+
+echo "Stopping ${PLZ_STOP_NAME} (${PLZ_STOP_REVISION})...";
+
+cd "${PLZ_STOP_LOCATION}";
+cat plz_start | while read name script; do
+  name="${name/:/}";
+  print_and_execute forever stop "${PLZ_STOP_NAME}.${PLZ_STOP_REVISION}.${name}";
+done;

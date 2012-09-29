@@ -1,0 +1,12 @@
+#!/bin/sh
+
+print_and_execute() {
+  echo $@ | sed -e 's/^/>>> /g';
+  exec $@ 2>&1 | sed -e 's/^/<<< /g';
+}
+
+[ -e "${HOME}"/.plz.rc ] && . "${HOME}"/.plz.rc;
+
+PLZ_APP_NAME="${1}"; shift;
+
+. $(which "plz-${PLZ_APP_NAME}");

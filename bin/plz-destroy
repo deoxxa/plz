@@ -1,0 +1,11 @@
+#!/bin/sh
+
+PLZ_DESTROY_NAME="${1}";
+PLZ_DESTROY_REVISION="${2}";
+PLZ_DESTROY="${PLZ_APP_STORE}/${PLZ_DESTROY_NAME}/${PLZ_DESTROY_REVISION}";
+
+echo "Destroying ${PLZ_DESTROY_NAME} (${PLZ_DESTROY_REVISION})...";
+
+plz stop "${PLZ_DESTROY_NAME}" "${PLZ_DESTROY_REVISION}";
+
+print_and_execute rm -rf "${PLZ_DESTROY}";

@@ -1,0 +1,13 @@
+#!/bin/sh
+
+PLZ_DEPLOY_NAME="${1}";
+PLZ_DEPLOY_REVISION="${2}";
+PLZ_DEPLOY_FROM="${PLZ_GIT_STORE}/${PLZ_DEPLOY_NAME}";
+PLZ_DEPLOY_TO="${PLZ_APP_STORE}/${PLZ_DEPLOY_NAME}/${PLZ_DEPLOY_REVISION}";
+
+echo "Deploying ${PLZ_DEPLOY_NAME} (${PLZ_DEPLOY_REVISION})...";
+
+print_and_execute mkdir -v -p "${PLZ_DEPLOY_TO}";
+print_and_execute plz git-export "${PLZ_DEPLOY_FROM}" "${PLZ_DEPLOY_REVISION}" "${PLZ_DEPLOY_TO}";
+print_and_execute plz npm-install "${PLZ_DEPLOY_TO}";
+plz start "${PLZ_DEPLOY_NAME}" "${PLZ_DEPLOY_REVISION}";

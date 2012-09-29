@@ -1,0 +1,10 @@
+#!/bin/sh
+
+PLZ_GIT_REPO="${1}";
+PLZ_GIT_REF="${2}";
+PLZ_GIT_OUTPUT="${3}";
+
+echo "Exporting ${PLZ_GIT_REPO} @ ${PLZ_GIT_REF} to ${PLZ_GIT_OUTPUT}";
+
+cd "${PLZ_GIT_REPO}";
+(git archive --format=tar "${PLZ_GIT_REF}" | (cd "${PLZ_GIT_OUTPUT}" && tar xvf -)) || exit 1;
