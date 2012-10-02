@@ -13,5 +13,5 @@ echo "We have ${PLZ_LINK_HAVE}";
 PLZ_LINK_BEST=$(semver -r ${PLZ_LINK_WANT} ${PLZ_LINK_HAVE} | tail -n 1);
 echo "Package will get ${PLZ_LINK_BEST}";
 
-rm -v "${PLZ_LINK_LOCATION}/_node";
+rm -v -f "${PLZ_LINK_LOCATION}/_node";
 ln -v -s "${PLZ_NODE_STORE}/${PLZ_LINK_BEST}/bin" "${PLZ_LINK_LOCATION}/_node";
