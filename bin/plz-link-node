@@ -1,0 +1,16 @@
+#!/bin/sh
+
+PLZ_LINK_LOCATION="${1}";
+
+cd "${PLZ_LINK_LOCATION}";
+
+PLZ_LINK_WANT=$(node -e 'package=require("./package.json");console.log((package&&package.engines&&package.engines.node)?package.engines.node:"*");');
+echo "Package wants ${PLZ_LINK_WANT}";
+
+PLZ_LINK_HAVE=$(find "${PLZ_NODE_STORE}" -maxdepth 1 -mindepth 1 | sed -re 's#^.+/([0-9\.]+)$#\1#');
+echo "We have ${PLZ_LINK_HAVE}";
+
+PLZ_LINK_BEST=$(semver -r ${PLZ_LINK_WANT} ${PLZ_LINK_HAVE} | tail -n 1);
+echo "Package will get ${PLZ_LINK_BEST}";
+
+ln -v -s "${PLZ_NODE_STORE}/${PLZ_LINK_BEST}/bin" "${PLZ_LINK_LOCATION}/_node";

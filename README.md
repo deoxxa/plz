@@ -44,8 +44,8 @@ set to `<application_name>.<application_revision>.<task_name>`.
 `restart <application_name> <application_revision>` will do `stop` followed by
 `start`.
 
-`npm-install` and `git-export` are used internally by `deploy` and as such
-probably shouldn't be used directly.
+`link-node`, `npm-install` and `git-export` are used internally by `deploy` and
+as such probably shouldn't be used directly.
 
 License
 -------
