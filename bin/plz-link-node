@@ -7,8 +7,8 @@ cd "${PLZ_LINK_LOCATION}";
 PLZ_LINK_WANT=$(node -e 'package=require("./package.json");console.log((package&&package.engines&&package.engines.node)?package.engines.node:"*");');
 echo "Package wants ${PLZ_LINK_WANT}";
 
-PLZ_LINK_HAVE=$(find "${PLZ_NODE_STORE}" -maxdepth 1 -mindepth 1 | sed -re 's#^.+/([0-9\.]+)$#\1#' | grep -o -E '([0-9\.]+)');
-echo "We have ${PLZ_LINK_HAVE}";
+PLZ_LINK_HAVE=$(find "${PLZ_NODE_STORE}" -maxdepth 1 -mindepth 1 | sed -re 's#^.+/([0-9\.]+)$#\1#' | grep -o -E '([0-9\.]+)' | xargs echo);
+echo "We have: ${PLZ_LINK_HAVE}";
 
 PLZ_LINK_BEST=$(semver -r ${PLZ_LINK_WANT} ${PLZ_LINK_HAVE} | tail -n 1);
 echo "Package will get ${PLZ_LINK_BEST}";
