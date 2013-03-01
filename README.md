@@ -7,9 +7,10 @@ Overview
 --------
 
 plz is an experiment in automated deployment. It'll deploy Node.JS applications,
-install their dependencies and start them in the background with
-[forever](https://github.com/nodejitsu/forever/). It can also destroy (deploy in
-reverse) applications, or restart deployed applications.
+install their dependencies, link in some locally-specific config if it exists
+and start them in the background with [forever](https://github.com/nodejitsu/forever/).
+It can also destroy (deploy in reverse) applications, or restart deployed
+applications.
 
 Installation
 ------------
@@ -44,8 +45,8 @@ set to `<application_name>.<application_revision>.<task_name>`.
 `restart <application_name> <application_revision>` will do `stop` followed by
 `start`.
 
-`link-node`, `npm-install` and `git-export` are used internally by `deploy` and
-as such probably shouldn't be used directly.
+`link-node`, `link-config`, `npm-install` and `git-export` are used internally
+by `deploy` and as such probably shouldn't be used directly.
 
 License
 -------

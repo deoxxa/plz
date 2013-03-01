@@ -1,0 +1,16 @@
+#!/bin/sh
+
+PLZ_LINK_NAME="${1}";
+PLZ_LINK_REVISION="${2}";
+
+PLZ_LINK_LOCATION="${PLZ_APP_STORE}/${PLZ_LINK_NAME}/${PLZ_LINK_REVISION}";
+PLZ_LINK_CONFIG="${PLZ_CONFIG_STORE}/${PLZ_LINK_NAME}/${PLZ_LINK_REVISION}";
+
+echo "Looking for config...";
+if [ -d "${PLZ_LINK_CONFIG}" ]; then
+  echo "Config found, linking into place.";
+
+  ln -v -s "${PLZ_LINK_CONFIG}" "${PLZ_LINK_LOCATION}/_config";
+else
+  echo "No config for this application and revision.";
+fi;
