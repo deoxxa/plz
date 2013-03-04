@@ -14,5 +14,5 @@ echo "Stopping ${PLZ_STOP_NAME} (${PLZ_STOP_REVISION})...";
 cd "${PLZ_STOP_LOCATION}";
 cat plz_start | while read name script; do
   name="${name%:}";
-  print_and_execute forever stop "${PLZ_STOP_NAME}.${PLZ_STOP_REVISION}.${name}";
+  print_and_execute jesus stop "${PLZ_STOP_NAME}.${PLZ_STOP_REVISION}.${name}";
 done;

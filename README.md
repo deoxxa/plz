@@ -8,7 +8,7 @@ Overview
 
 plz is an experiment in automated deployment. It'll deploy Node.JS applications,
 install their dependencies, link in some locally-specific config if it exists
-and start them in the background with [forever](https://github.com/nodejitsu/forever/).
+and start them in the background with [jesus](https://github.com/deoxxa/jesus/).
 It can also destroy (deploy in reverse) applications, or restart deployed
 applications.
 
@@ -35,12 +35,12 @@ specific revision of an application if it exists.
 by `deploy`.
 
 `start <application_name> <application_revision>` will start an application
-using `forever start`. It reads a `plz_start` file from the root of the
-application if it exists. The uid of any forever processes it creates will be
-set to `<application_name>.<application_revision>.<task_name>`.
+using `jesus start`. It reads a `plz_start` file from the root of the
+application if it exists. The uid of any jesus processes it creates will be set
+to `<application_name>.<application_revision>.<task_name>`.
 
 `stop <application_name> <application_revision>` will stop an application using
-`forever stop`. It also reads from the `plz_start` file if it exists.
+`jesus stop`. It also reads from the `plz_start` file if it exists.
 
 `restart <application_name> <application_revision>` will do `stop` followed by
 `start`.

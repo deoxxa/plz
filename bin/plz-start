@@ -14,5 +14,5 @@ echo "Starting ${PLZ_START_NAME} (${PLZ_START_REVISION})...";
 cd "${PLZ_START_LOCATION}";
 cat plz_start | while read name script; do
   name="${name%:}";
-  print_and_execute forever start -a -c ./_node/node --uid "${PLZ_START_NAME}.${PLZ_START_REVISION}.${name}" "${script}";
+  print_and_execute jesus start "${PLZ_START_NAME}.${PLZ_START_REVISION}.${name}" ./_node/node ${script};
 done;
