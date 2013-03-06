@@ -3,4 +3,6 @@
 PLZ_NPM_LOCATION="${1}";
 
 cd "${PLZ_NPM_LOCATION}";
-./_node/npm install;
+if [ -e package.json ]; then
+  ./_node/npm install;
+fi;
