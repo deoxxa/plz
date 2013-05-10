@@ -5,6 +5,14 @@ PLZ_DEPLOY_REVISION="${2}";
 PLZ_DEPLOY_FROM="${PLZ_GIT_STORE}/${PLZ_DEPLOY_NAME}";
 PLZ_DEPLOY_TO="${PLZ_APP_STORE}/${PLZ_DEPLOY_NAME}/${PLZ_DEPLOY_REVISION}";
 
+if [ "${PLZ_DEPLOY_NAME}x" = "x" -o "${PLZ_DEPLOY_REVISION}x" = "x" ]; then
+  echo;
+  echo "Usage: plz deploy <name> <revision>";
+  echo;
+
+  exit 1;
+fi;
+
 echo "Deploying ${PLZ_DEPLOY_NAME} (${PLZ_DEPLOY_REVISION})...";
 
 print_and_execute mkdir -v -p "${PLZ_DEPLOY_TO}";
