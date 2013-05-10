@@ -4,6 +4,14 @@ PLZ_GIT_REPO="${1}";
 PLZ_GIT_REF="${2}";
 PLZ_GIT_OUTPUT="${3}";
 
+if [ "${PLZ_GIT_REPO}x" = "x" -o "${PLZ_GIT_REF}x" = "x" -o "${PLZ_GIT_OUTPUT}x" = "x" ]; then
+  echo;
+  echo "Usage: plz git-export <repo> <ref> <output>";
+  echo;
+
+  exit 1;
+fi;
+
 echo "Exporting ${PLZ_GIT_REPO} @ ${PLZ_GIT_REF} to ${PLZ_GIT_OUTPUT}";
 
 cd "${PLZ_GIT_REPO}";

@@ -2,15 +2,41 @@
 
 PLZ_LINK_LOCATION="${1}";
 
+if [ "${PLZ_LINK_LOCATION}x" = "x" ]; then
+  echo;
+  echo "Usage: plz link-node <location>";
+  echo;
+
+  exit 1;
+fi;
+
 cd "${PLZ_LINK_LOCATION}";
 
-PLZ_LINK_WANT=$(node -e 'package=require("./package.json");console.log((package&&package.engines&&package.engines.node)?package.engines.node:"*");');
+PLZ_LINK_WANT=$(node -e 'package=(require("fs").existsSync("./package.json")?require("./package.json"):{});console.log((package&&package.engines&&package.engines.node)?package.engines.node:"*");');
+
+if [ "${PLZ_LINK_WANT}x" = "x" ]; then
+  echo;
+  echo "Error: the package has made it really hard to decide what version of node to look for";
+  echo;
+
+  exit 1;
+fi;
+
 echo "Package wants ${PLZ_LINK_WANT}";
 
 PLZ_LINK_HAVE=$(find "${PLZ_NODE_STORE}" -maxdepth 1 -mindepth 1 | sed -re 's#^.+/([0-9\.]+)$#\1#' | grep -o -E '([0-9]+\.[0-9]+\.[0-9]+)' | sort -u | xargs echo);
 echo "We have: ${PLZ_LINK_HAVE}";
 
 PLZ_LINK_BEST=$(semver -r ${PLZ_LINK_WANT} ${PLZ_LINK_HAVE} | tail -n 1);
+
+if [ "${PLZ_LINK_BEST}x" = "x" ]; then
+  echo;
+  echo "Error: we can't satisfy this package's requested node version";
+  echo;
+
+  exit 1;
+fi;
+
 echo "Package will get ${PLZ_LINK_BEST}";
 
 rm -v -f "${PLZ_LINK_LOCATION}/_node";
