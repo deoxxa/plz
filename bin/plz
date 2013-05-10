@@ -5,8 +5,39 @@ print_and_execute() {
   exec $@ 2>&1 | sed -e 's/^/<<< /g';
 }
 
+available_commands() {
+  echo "Available commands:";
+  echo;
+  for file in $(ls $(dirname ${0})/plz-*); do
+    echo "  $(basename ${file} | sed -e 's/plz-//')";
+  done;
+  echo;
+}
+
 [ -e "${HOME}"/.plz.rc ] && . "${HOME}"/.plz.rc;
 
-PLZ_APP_NAME="${1}"; shift;
+PLZ_APP_NAME="${1}";
 
-. $(which "plz-${PLZ_APP_NAME}");
+if [ "${PLZ_APP_NAME}x" = "x" ]; then
+  echo;
+  echo "Usage: plz <command> [options]";
+  echo;
+  available_commands;
+
+  exit 1;
+fi;
+
+PLZ_APP_LOCATION=$(which "plz-${PLZ_APP_NAME}");
+
+if [ "${PLZ_APP_LOCATION}x" = "x" ]; then
+  echo;
+  echo "Error: command \`${PLZ_APP_NAME}' not found";
+  echo;
+  available_commands;
+
+  exit 1;
+fi;
+
+shift;
+
+. "${PLZ_APP_LOCATION};
