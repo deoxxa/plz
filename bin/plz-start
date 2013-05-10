@@ -2,6 +2,15 @@
 
 PLZ_START_NAME="${1}";
 PLZ_START_REVISION="${2}";
+
+if [ "${PLZ_START_NAME}x" = "x" -o "${PLZ_START_REVISION}x" = "x" ]; then
+  echo;
+  echo "Usage: plz start <name> <revision>";
+  echo;
+
+  exit 1;
+fi;
+
 PLZ_START_LOCATION="${PLZ_APP_STORE}/${PLZ_START_NAME}/${PLZ_START_REVISION}";
 
 if [ ! -d "${PLZ_START_LOCATION}" ]; then
