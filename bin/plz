@@ -40,4 +40,4 @@ fi;
 
 shift;
 
-. "${PLZ_APP_LOCATION};
+. "${PLZ_APP_LOCATION}";
