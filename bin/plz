@@ -2,7 +2,7 @@
 
 print_and_execute() {
   echo $@ | sed -e 's/^/>>> /g';
-  exec $@ 2>&1 | sed -e 's/^/<<< /g';
+  eval $@ 2>&1 | sed -e 's/^/<<< /g';
 }
 
 available_commands() {
