@@ -1,8 +1,8 @@
 #!/bin/sh
 
-PLZ_LINK_LOCATION="${1}";
+PLZ_LINK_NODE_LOCATION="${1}";
 
-if [ "${PLZ_LINK_LOCATION}x" = "x" ]; then
+if [ "${PLZ_LINK_NODE_LOCATION}x" = "x" ]; then
   echo;
   echo "Usage: plz link-node <location>";
   echo;
@@ -10,11 +10,11 @@ if [ "${PLZ_LINK_LOCATION}x" = "x" ]; then
   exit 1;
 fi;
 
-cd "${PLZ_LINK_LOCATION}";
+cd "${PLZ_LINK_NODE_LOCATION}";
 
-PLZ_LINK_WANT=$(node -e 'package=(require("fs").existsSync("./package.json")?require("./package.json"):{});console.log((package&&package.engines&&package.engines.node)?package.engines.node:"*");');
+PLZ_LINK_NODE_WANT=$(json.sh package.json | awk '{ if($ == "/engines/node") print $3 }');
 
-if [ "${PLZ_LINK_WANT}x" = "x" ]; then
+if [ "${PLZ_LINK_NODE_WANT}x" = "x" ]; then
   echo;
   echo "Error: the package has made it really hard to decide what version of node to look for";
   echo;
@@ -22,14 +22,14 @@ if [ "${PLZ_LINK_WANT}x" = "x" ]; then
   exit 1;
 fi;
 
-echo "Package wants ${PLZ_LINK_WANT}";
+echo "Package wants ${PLZ_LINK_NODE_WANT}";
 
-PLZ_LINK_HAVE=$(find "${PLZ_NODE_STORE}" -maxdepth 1 -mindepth 1 | sed -re 's#^.+/([0-9\.]+)$#\1#' | grep -o -E '([0-9]+\.[0-9]+\.[0-9]+)' | sort -u | xargs echo);
-echo "We have: ${PLZ_LINK_HAVE}";
+PLZ_LINK_NODE_HAVE=$(find "${PLZ_NODE_STORE}" -maxdepth 1 -mindepth 1 | xargs -n 1 basename | xargs echo);
+echo "We have: ${PLZ_LINK_NODE_HAVE}";
 
-PLZ_LINK_BEST=$(semver -r ${PLZ_LINK_WANT} ${PLZ_LINK_HAVE} | tail -n 1);
+PLZ_LINK_NODE_BEST=$(semver -r ${PLZ_LINK_NODE_WANT} ${PLZ_LINK_NODE_HAVE} | tail -n 1);
 
-if [ "${PLZ_LINK_BEST}x" = "x" ]; then
+if [ "${PLZ_LINK_NODE_BEST}x" = "x" ]; then
   echo;
   echo "Error: we can't satisfy this package's requested node version";
   echo;
@@ -37,7 +37,9 @@ if [ "${PLZ_LINK_BEST}x" = "x" ]; then
   exit 1;
 fi;
 
-echo "Package will get ${PLZ_LINK_BEST}";
+echo "Package will get ${PLZ_LINK_NODE_BEST}";
 
-rm -v -f "${PLZ_LINK_LOCATION}/_node";
-ln -v -s "${PLZ_NODE_STORE}/${PLZ_LINK_BEST}/bin" "${PLZ_LINK_LOCATION}/_node";
+mkdir -v -p "${PLZ_LINK_NODE_LOCATION}/.plz.bin";
+
+ln -v -s "${PLZ_NODE_STORE}/${PLZ_LINK_NODE_BEST}/bin/node" "${PLZ_LINK_NODE_LOCATION}/.plz.bin/node";
+ln -v -s "${PLZ_NODE_STORE}/${PLZ_LINK_NODE_BEST}/bin/npm" "${PLZ_LINK_NODE_LOCATION}/.plz.bin/npm";

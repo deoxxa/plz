@@ -10,7 +10,6 @@ if [ "${PLZ_NPM_INSTALL_LOCATION}x" = "x" ]; then
   exit 1;
 fi;
 
-if [ -e package.json ]; then
-  ./_node/npm install;
-fi;
 cd "${PLZ_NPM_INSTALL_LOCATION}";
+
+[ -e package.json ] && ./.plz.bin/npm install;
