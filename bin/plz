@@ -8,8 +8,8 @@ print_and_execute() {
 available_commands() {
   echo "Available commands:";
   echo;
-  for file in $(ls $(dirname ${0})/plz-*); do
-    echo "  $(basename ${file} | sed -e 's/plz-//')";
+  find $(dirname ${0}) -name 'plz-*' -type f | xargs -n 1 basename | while read file; do
+    echo "  ${file#plz-}";
   done;
   echo;
 }
