@@ -1,0 +1,44 @@
+#!/bin/sh
+
+PLZ_CONFIGURE_UPSTART_NAME="${1}";
+PLZ_CONFIGURE_UPSTART_REVISION="${2}";
+
+if [ "${PLZ_CONFIGURE_UPSTART_NAME}x" = "x" -o "${PLZ_CONFIGURE_UPSTART_REVISION}x" = "x" ]; then
+  echo;
+  echo "Usage: plz configure-upstart <name> <revision>";
+  echo;
+
+  exit 1;
+fi;
+
+PLZ_CONFIGURE_UPSTART_LOCATION="${PLZ_APP_STORE}/${PLZ_CONFIGURE_UPSTART_NAME}/${PLZ_CONFIGURE_UPSTART_REVISION}";
+
+if [ ! -d "${PLZ_CONFIGURE_UPSTART_LOCATION}" ]; then
+  echo "${PLZ_CONFIGURE_UPSTART_NAME}/${PLZ_CONFIGURE_UPSTART_REVISION} doesn't exist!";
+  exit;
+fi;
+
+echo "Configuring upstart for ${PLZ_CONFIGURE_UPSTART_NAME} (${PLZ_CONFIGURE_UPSTART_REVISION})...";
+
+cd "${PLZ_CONFIGURE_UPSTART_LOCATION}";
+cat plz_start | while read task_name task_command; do
+  task_name="${task_name%:}";
+  task_file="${HOME}/.init/${PLZ_INSTALL_NAME}.${PLZ_CONFIGURE_UPSTART_NAME}.${PLZ_CONFIGURE_UPSTART_REVISION}.${task_name}.conf";
+
+  cat > "${task_file}" <<EOF
+start on startup
+stop on shutdown
+
+respawn
+
+script
+  PATH="\${PATH}:${PLZ_CONFIGURE_UPSTART_LOCATION}/.plz.bin"
+
+  start-stop-daemon \\
+    --chdir "${PLZ_CONFIGURE_UPSTART_LOCATION}" \\
+    --pidfile "${PLZ_PID_STORE}/${PLZ_CONFIGURE_UPSTART_NAME}.${PLZ_CONFIGURE_UPSTART_REVISION}.${task_name}.pid" \\
+    --exec /bin/bash \\
+    --make-pidfile --start -- -c "exec ${task_command} 1>>${HOME}/logs/${PLZ_CONFIGURE_UPSTART_NAME}.${PLZ_CONFIGURE_UPSTART_REVISION}.${task_name}.out 2>>${HOME}/logs/${PLZ_CONFIGURE_UPSTART_NAME}.${PLZ_CONFIGURE_UPSTART_REVISION}.${task_name}.err"
+end script
+EOF
+done;

@@ -11,7 +11,18 @@ if [ "${PLZ_RESTART_NAME}x" = "x" -o "${PLZ_RESTART_REVISION}x" = "x" ]; then
   exit 1;
 fi;
 
+PLZ_RESTART_LOCATION="${PLZ_APP_STORE}/${PLZ_RESTART_NAME}/${PLZ_RESTART_REVISION}";
+
+if [ ! -d "${PLZ_RESTART_LOCATION}" ]; then
+  echo "${PLZ_RESTART_NAME}/${PLZ_RESTART_REVISION} doesn't exist!";
+  exit;
+fi;
+
 echo "Restarting ${PLZ_RESTART_NAME} (${PLZ_RESTART_REVISION})...";
 
-plz stop ${PLZ_RESTART_NAME} ${PLZ_RESTART_REVISION};
-plz start ${PLZ_RESTART_NAME} ${PLZ_RESTART_REVISION};
+cd "${PLZ_RESTART_LOCATION}";
+cat plz_start | while read task_name task_command; do
+  task_name="${task_name%:}";
+
+  print_and_execute initctl restart "${PLZ_INSTALL_NAME}.${PLZ_RESTART_NAME}.${PLZ_RESTART_REVISION}.${task_name}";
+done;

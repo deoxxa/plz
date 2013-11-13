@@ -21,7 +21,8 @@ fi;
 echo "Stopping ${PLZ_STOP_NAME} (${PLZ_STOP_REVISION})...";
 
 cd "${PLZ_STOP_LOCATION}";
-cat plz_start | while read name script; do
-  name="${name%:}";
-  print_and_execute jesus stop "${PLZ_STOP_NAME}.${PLZ_STOP_REVISION}.${name}";
+cat plz_start | while read task_name task_command; do
+  task_name="${task_name%:}";
+
+  print_and_execute initctl stop "${PLZ_INSTALL_NAME}.${PLZ_STOP_NAME}.${PLZ_STOP_REVISION}.${task_name}";
 done;
