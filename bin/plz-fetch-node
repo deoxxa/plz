@@ -1,0 +1,38 @@
+#!/bin/sh
+
+PLZ_FETCH_NODE_VERSION="${1}";
+
+if [ "${PLZ_FETCH_NODE_VERSION}x" = "x" ]; then
+  echo;
+  echo "Usage: plz fetch-node <version>";
+  echo;
+
+  exit 1;
+fi;
+
+echo "Trying to fetch ${PLZ_FETCH_NODE_VERSION}";
+
+PLZ_FETCH_NODE_VERSIONS=$(curl -s http://nodejs.org/dist/ | grep -oE 'v([0-9]+\.[0-9]+\.[0-9]+)' | sort);
+
+PLZ_FETCH_NODE_BEST=$(semver-c -r "${PLZ_FETCH_NODE_VERSION}" ${PLZ_FETCH_NODE_VERSIONS} | tail -n 1);
+
+if [ "${PLZ_FETCH_NODE_BEST}x" = "x" ]; then
+  echo;
+  echo "Error: we can't get the requested node version";
+  echo;
+
+  exit 1;
+fi;
+
+echo "Going to fetch version ${PLZ_FETCH_NODE_BEST}";
+
+mkdir -p "${PLZ_NODE_STORE}";
+
+if [ ! -d "${PLZ_NODE_STORE}/${PLZ_FETCH_NODE_BEST}" ]; then
+  curl -o "${PLZ_NODE_STORE}/${PLZ_FETCH_NODE_BEST}.tar.gz" "http://nodejs.org/dist/v${PLZ_FETCH_NODE_BEST}/node-v${PLZ_FETCH_NODE_BEST}-linux-x86.tar.gz";
+  mkdir "${PLZ_NODE_STORE}/${PLZ_FETCH_NODE_BEST}";
+  tar -C "${PLZ_NODE_STORE}/${PLZ_FETCH_NODE_BEST}" --strip-components 1 -xzf "${PLZ_NODE_STORE}/${PLZ_FETCH_NODE_BEST}.tar.gz";
+  rm -f "${PLZ_NODE_STORE}/${PLZ_FETCH_NODE_BEST}.tar.gz";
+fi;
+
+echo "Done";
