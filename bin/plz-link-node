@@ -12,7 +12,7 @@ fi;
 
 cd "${PLZ_LINK_NODE_LOCATION}";
 
-PLZ_LINK_NODE_WANT=$(json.sh package.json | awk '{ if($ == "/engines/node") print $3 }');
+PLZ_LINK_NODE_WANT=$(json.sh package.json | awk '{ if($1 == "/engines/node") print $3 }');
 
 if [ "${PLZ_LINK_NODE_WANT}x" = "x" ]; then
   echo;
