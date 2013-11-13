@@ -2,7 +2,6 @@
 
 PLZ_DESTROY_NAME="${1}";
 PLZ_DESTROY_REVISION="${2}";
-PLZ_DESTROY="${PLZ_APP_STORE}/${PLZ_DESTROY_NAME}/${PLZ_DESTROY_REVISION}";
 
 if [ "${PLZ_DESTROY_NAME}x" = "x" -o "${PLZ_DESTROY_REVISION}x" = "x" ]; then
   echo;
@@ -12,8 +11,10 @@ if [ "${PLZ_DESTROY_NAME}x" = "x" -o "${PLZ_DESTROY_REVISION}x" = "x" ]; then
   exit 1;
 fi;
 
+PLZ_DESTROY_LOCATION="${PLZ_APP_STORE}/${PLZ_DESTROY_NAME}/${PLZ_DESTROY_REVISION}";
+
 echo "Destroying ${PLZ_DESTROY_NAME} (${PLZ_DESTROY_REVISION})...";
 
 plz stop "${PLZ_DESTROY_NAME}" "${PLZ_DESTROY_REVISION}";
 
-print_and_execute rm -rf "${PLZ_DESTROY}";
+print_and_execute rm -rf "${PLZ_DESTROY_LOCATION}";

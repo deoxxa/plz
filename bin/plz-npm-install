@@ -1,8 +1,8 @@
 #!/bin/sh
 
-PLZ_NPM_LOCATION="${1}";
+PLZ_NPM_INSTALL_LOCATION="${1}";
 
-if [ "${PLZ_NPM_LOCATION}x" = "x" ]; then
+if [ "${PLZ_NPM_INSTALL_LOCATION}x" = "x" ]; then
   echo;
   echo "Usage: plz npm-install <location>";
   echo;
@@ -10,7 +10,7 @@ if [ "${PLZ_NPM_LOCATION}x" = "x" ]; then
   exit 1;
 fi;
 
-cd "${PLZ_NPM_LOCATION}";
 if [ -e package.json ]; then
   ./_node/npm install;
 fi;
+cd "${PLZ_NPM_INSTALL_LOCATION}";
