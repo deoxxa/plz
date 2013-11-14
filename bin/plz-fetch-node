@@ -14,7 +14,7 @@ echo "Trying to fetch ${PLZ_FETCH_NODE_VERSION}";
 
 PLZ_FETCH_NODE_VERSIONS=$(curl -s http://nodejs.org/dist/ | grep -oE 'v([0-9]+\.[0-9]+\.[0-9]+)' | sort);
 
-PLZ_FETCH_NODE_BEST=$(semver-c -r "${PLZ_FETCH_NODE_VERSION}" ${PLZ_FETCH_NODE_VERSIONS} | tail -n 1);
+PLZ_FETCH_NODE_BEST=$(semver -r "${PLZ_FETCH_NODE_VERSION}" ${PLZ_FETCH_NODE_VERSIONS} | tail -n 1);
 
 if [ "${PLZ_FETCH_NODE_BEST}x" = "x" ]; then
   echo;
