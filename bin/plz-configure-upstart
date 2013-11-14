@@ -42,6 +42,10 @@ script
     mkdir "${HOME}/logs";
   fi;
 
+  if [ ! -e "${PLZ_PID_STORE}" ]; then
+    mkdir "${PLZ_PID_STORE}";
+  fi;
+
   start-stop-daemon \\
     --chdir "${PLZ_CONFIGURE_UPSTART_LOCATION}" \\
     --pidfile "${PLZ_PID_STORE}/${PLZ_CONFIGURE_UPSTART_NAME}.${PLZ_CONFIGURE_UPSTART_REVISION}.${task_name}.pid" \\
