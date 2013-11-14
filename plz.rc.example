@@ -4,3 +4,4 @@ PLZ_APP_STORE="${HOME}/apps";
 PLZ_GIT_STORE="${HOME}/gits";
 
 PLZ_NODE_STORE="${HOME}/.plz/nodes";
+PLZ_PID_STORE="${HOME}/.plz/pids";
