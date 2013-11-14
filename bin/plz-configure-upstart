@@ -25,6 +25,10 @@ cat plz_start | while read task_name task_command; do
   task_name="${task_name%:}";
   task_file="${HOME}/.init/${PLZ_INSTALL_NAME}.${PLZ_CONFIGURE_UPSTART_NAME}.${PLZ_CONFIGURE_UPSTART_REVISION}.${task_name}.conf";
 
+  if [ ! -d "${HOME}/.init" ]; then
+    mkdir -v "${HOME}/.init";
+  fi;
+
   cat > "${task_file}" <<EOF
 start on startup
 stop on shutdown
