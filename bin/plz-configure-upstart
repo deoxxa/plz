@@ -50,3 +50,5 @@ script
 end script
 EOF
 done;
+
+initctl reload-configuration;
